@@ -35,6 +35,7 @@ public class RenderingScreen implements Screen {
 	 */
 	public void addScreen(String identifier, Screen screen){
 		this.screen_map.put(identifier, screen);
+		this.current=screen;
 	}
 
 	/**

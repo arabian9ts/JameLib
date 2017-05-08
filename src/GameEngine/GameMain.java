@@ -15,9 +15,13 @@ public class GameMain {
 	 * @param args コマンドライン引数です
 	 */
 	public static void main(String[] args) {
-		MainContainer container=new MainContainer();
 		JFrame frame=new JFrame();
+		
+		MainContainer container=new MainContainer(frame);
 		frame.getContentPane().add(container);
+		
+		container.game_start();
+
 	}
 
 }
