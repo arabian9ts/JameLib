@@ -21,7 +21,5 @@ public class GameMain {
 		frame.getContentPane().add(container);
 		
 		container.game_start();
-
 	}
-
 }

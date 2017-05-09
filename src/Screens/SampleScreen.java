@@ -1,12 +1,17 @@
 package Screens;
 
+import java.awt.Color;
 import java.awt.Graphics;
+
+import Effects.Effect;
+import Effects.SampleEffect;
 
 /**
  * @author arabian9ts
  *
  */
-public class StartScreen implements Screen {
+public class SampleScreen implements Screen {
+	Effect _effect;
 
 	/**
 	 * 画面病がのための初期化処理をします
@@ -15,6 +20,7 @@ public class StartScreen implements Screen {
 	@Override
 	public void initialize() {
 		/* ここに初期化したい処理を書きます */
+		this._effect=new SampleEffect();
 	}
 
 	/**
@@ -33,7 +39,8 @@ public class StartScreen implements Screen {
 	@Override
 	public void render(Graphics g) {
 		/* ここに描画したいものを書きます */
-		g.drawOval(0, 0, 100, 100);
+		g.setColor(Color.black);
+		g.fillOval(50, 80, 100, 100);
 	}
 
 	/**

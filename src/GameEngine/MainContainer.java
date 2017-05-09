@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Screens.RenderingScreen;
-import Screens.StartScreen;
+import Screens.SampleScreen;
 
 /**
  * 画面の構成要素を配置するコンテナ
@@ -18,8 +18,10 @@ import Screens.StartScreen;
 public class MainContainer extends JPanel implements Runnable {
 	int bufferSize = 2;
 	JFrame frame;
+	FrameRate rate;
 	RenderingScreen renderer;
-	StartScreen _start;
+	BufferStrategy bufferStrategy;
+	SampleScreen _sample;
 
 	/**
 	 * コンポーネントの初期化を行います
@@ -29,10 +31,17 @@ public class MainContainer extends JPanel implements Runnable {
 		setBackground(Color.black);
 		frame.setVisible(true);
 		frame.setSize(500, 500);
-		this._start=new StartScreen();
+		frame.setBackground(Color.white);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.createBufferStrategy(this.bufferSize);
+		
+		this._sample=new SampleScreen();
 		this.frame = frame;
+		this.rate=new FrameRate();
 		this.renderer = new RenderingScreen();
-		this.renderer.addScreen("start", this._start); //$NON-NLS-1$
+		this.renderer.addScreen("sample", this._sample); //$NON-NLS-1$
+		this.renderer.swapScreen("sample"); //$NON-NLS-1$
+		this.bufferStrategy = this.frame.getBufferStrategy();
 	}
 
 	/**
@@ -48,19 +57,26 @@ public class MainContainer extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
-		this.frame.createBufferStrategy(this.bufferSize);
-		BufferStrategy bufferStrategy = this.frame.getBufferStrategy();
 		while (true) {
+			this.rate.checkin();
 			for (int i = 0; i < this.bufferSize; i++) {
-				Graphics g = bufferStrategy.getDrawGraphics();
-				if (!bufferStrategy.contentsLost()) {
+				Graphics g = this.bufferStrategy.getDrawGraphics();
+				if (!this.bufferStrategy.contentsLost()) {
 					this.renderer.update();
 					this.renderer.render(g);
-					bufferStrategy.show();
+					this.bufferStrategy.show();
 					g.dispose();
 				}
 			}
-
+			try{
+				long s=this.rate.checkout();
+				System.out.println(s);
+				Thread.sleep(s);
+				//Thread.sleep(100);
+			}
+			catch(InterruptedException e){
+				Thread.currentThread().interrupt();
+			}
 		}
 	}
 }
