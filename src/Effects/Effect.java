@@ -9,6 +9,11 @@ import java.awt.Graphics;
  *
  */
 public interface Effect extends Runnable {
+	
+	/**
+	 * エフェクトスレッドをスタートします
+	 */
+	public void start();
 
 	/**
 	 * エフェクトの初期化関数<br>

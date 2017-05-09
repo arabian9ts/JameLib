@@ -3,7 +3,6 @@ package Screens;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import Effects.Effect;
 import Effects.SampleEffect;
 
 /**
@@ -11,7 +10,10 @@ import Effects.SampleEffect;
  *
  */
 public class SampleScreen implements Screen {
-	Effect _effect;
+	int x;
+	int y;
+	int counter;
+	SampleEffect effect;
 
 	/**
 	 * 画面病がのための初期化処理をします
@@ -20,7 +22,10 @@ public class SampleScreen implements Screen {
 	@Override
 	public void initialize() {
 		/* ここに初期化したい処理を書きます */
-		this._effect=new SampleEffect();
+		this.x=0;
+		this.y=80;
+		this.counter=15;
+		(this.effect=new SampleEffect()).start();
 	}
 
 	/**
@@ -30,6 +35,8 @@ public class SampleScreen implements Screen {
 	@Override
 	public void update() {
 		/* ここに更新したい処理を書きます */
+		this.x=this.x%500+1;
+		this.counter=this.counter%150+1;
 	}
 
 	/**
@@ -39,8 +46,15 @@ public class SampleScreen implements Screen {
 	@Override
 	public void render(Graphics g) {
 		/* ここに描画したいものを書きます */
-		g.setColor(Color.black);
-		g.fillOval(50, 80, 100, 100);
+		g.setColor(Color.blue);
+		g.fillOval(this.x, this.y, 100, 100);
+		
+		if(this.counter%150==0){
+			System.out.println("create effect"); //$NON-NLS-1$
+			(this.effect=new SampleEffect()).start();
+		}
+		if(this.effect!=null)
+			this.effect.render(g);
 	}
 
 	/**

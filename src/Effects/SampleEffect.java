@@ -3,6 +3,8 @@ package Effects;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import Exceptions.ImageLoadException;
+import Exceptions.NotFoundException;
 import Utilities.ImageLoader;
 
 /**
@@ -11,11 +13,9 @@ import Utilities.ImageLoader;
  *
  */
 public class SampleEffect implements Effect {
-	int cnt = 0;
-	int sup = 4;
-	int R = 50;
+	int R = 10;
 	int radius = this.R;
-	Image effect;
+	Image image;
 
 	/**
 	 * エフェクトの初期化コンストラクタ
@@ -25,23 +25,39 @@ public class SampleEffect implements Effect {
 		(new Thread(this)).start();
 	}
 	
-	/** (non-Javadoc)
+
+	/**
+	 * エフェクトのスレッドをスタートします
+	 * @see Effects.Effect#start()
+	 */
+	@Override
+	public void start() {
+		(new Thread(this)).start();
+	}
+	
+	/**
+	 * エフェクトの初期化をします
 	 * @see Effects.Effect#initialize()
 	 */
+	@Override
 	public void initialize(){
 		try {
-			this.effect = (new ImageLoader()).loadImage("images/sample.jpg"); //$NON-NLS-1$
-		} catch (Exception e) {
-			//
+			this.image = (ImageLoader.loadImage("images/sample_effect.jpg")); //$NON-NLS-1$
+		}catch(NotFoundException en){
+			en.printStackTrace();
+		}
+		catch (ImageLoadException ei) {
+			ei.printStackTrace();
 		}
 	}
 	
-	/** (non-Javadoc)
+	/**
+	 * エフェクトの更新を行います
 	 * @see Effects.Effect#update()
 	 */
+	@Override
 	public void update(){
-		this.cnt++;
-		this.radius = this.R + (this.cnt + 1) * 15;
+		this.radius+=3;
 	}
 
 	/**
@@ -52,12 +68,14 @@ public class SampleEffect implements Effect {
 	public void run() {
 		while (true) {
 			try {
-				Thread.sleep(30);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			update();
-			if (this.cnt >= this.sup) {
+			//render(MainContainer.g);
+			System.out.println("running"); //$NON-NLS-1$
+			if (this.radius >= 200) {
 				return;
 			}
 		}
@@ -70,9 +88,12 @@ public class SampleEffect implements Effect {
 	 * @param g グラフィックス
 	 * @see Effects.Effect#render(java.awt.Graphics)
 	 */
+	@Override
 	public void render(Graphics g) {
-		g.drawImage(this.effect, 500 - this.radius, 500
+		g.drawImage(this.image, 200 - this.radius, 300
 				- this.radius, 2 * this.radius, 2 * this.radius, null);
+		
 	}
+
 }
 

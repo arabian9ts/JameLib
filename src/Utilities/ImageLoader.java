@@ -1,10 +1,12 @@
 package Utilities;
 
 import java.awt.Image;
+import java.io.File;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import Exceptions.ImageLoadException;
+import Exceptions.NotFoundException;
 
 /**
  * 画像を取得するクラス
@@ -18,14 +20,18 @@ public class ImageLoader {
 	 * @param img_path 取得したい画像の相対パス
 	 * @return Image型のロードした画像
 	 * @throws ImageLoadException 画像読み込み例外
+	 * @throws NotFoundException 画像が存在しない例外
 	 */
-	public static Image loadImage(String img_path) throws ImageLoadException {
-		Image image;
-		try {
-			 image=ImageIO.read(ImageLoader.class.getClassLoader().getResource(img_path));
-		} catch (Exception e) {
-			throw new ImageLoadException("画像が読み込めません"); //$NON-NLS-1$
+	public static Image loadImage(String img_path) throws ImageLoadException, NotFoundException {
+		if(!new File(img_path).exists()){
+			throw new NotFoundException(img_path);
 		}
-		return image;
+		ImageIcon image=null;
+		try {
+			image=new ImageIcon(img_path);
+		} catch (Exception e) {
+			throw new ImageLoadException(img_path);
+		}
+		return image.getImage();
 	}
 }

@@ -6,11 +6,19 @@ package Exceptions;
  *
  */
 public class ImageLoadException extends Exception {
+	
+	/**
+	 * デフォルトコンストラクタ
+	 */
+	public ImageLoadException(){
+		super("画像が読み込めません"); //$NON-NLS-1$
+	}
+	
 	/**
 	 * 画像読み込みのエラー
-	 * @param error エラーメッセージ
+	 * @param path 取得しようとしたファイルのパス
 	 */
-	public ImageLoadException(String error){
-		super(error);
+	public ImageLoadException(String path){
+		super("画像が読み込めません : "+path); //$NON-NLS-1$
 	}
 }
