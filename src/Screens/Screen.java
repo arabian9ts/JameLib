@@ -1,12 +1,13 @@
 package Screens;
 
 import java.awt.Graphics;
+import java.util.EventListener;
 
 /**
  * 画面病がのインターフェース
  * @author arabian9ts
  */
-public interface Screen {
+public interface Screen extends EventListener {
 	
 	/**
 	 * 画面初期化関数

@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Constants.WindowParams;
-import Screens.RenderingScreen;
+import Screens.RenderingDelegator;
 import Screens.SampleScreen;
 
 /**
@@ -17,17 +17,6 @@ import Screens.SampleScreen;
  *
  */
 public class MainContainer extends JPanel implements Runnable {
-	int bufferSize = 2;
-	/**
-	 * 
-	 */
-	Graphics g;
-	JFrame frame;
-	FrameRate rate;
-	RenderingScreen renderer;
-	BufferStrategy bufferStrategy;
-	SampleScreen _sample;
-
 	/**
 	 * コンポーネントの初期化を行います
 	 * @param frame メインフレーム
@@ -42,7 +31,7 @@ public class MainContainer extends JPanel implements Runnable {
 		
 		this.frame = frame;
 		this.rate=new FrameRate();
-		this.renderer = new RenderingScreen();
+		this.renderer = new RenderingDelegator();
 		this.bufferStrategy = this.frame.getBufferStrategy();
 		
 		screenRegister();
@@ -52,8 +41,7 @@ public class MainContainer extends JPanel implements Runnable {
 	 * スクリーンを登録します
 	 */
 	public void screenRegister(){
-		this._sample=new SampleScreen();
-		this.renderer.addScreen("sample", this._sample); //$NON-NLS-1$
+		this.renderer.addScreen("sample", new SampleScreen()); //$NON-NLS-1$
 		this.renderer.swapScreen("sample"); //$NON-NLS-1$
 	}
 
@@ -76,9 +64,9 @@ public class MainContainer extends JPanel implements Runnable {
 				this.g = this.bufferStrategy.getDrawGraphics();
 				if (!this.bufferStrategy.contentsLost()) {
 					this.g.setColor(Color.black);
+					this.g.fillRect(0, 0, 300, 300);
 					this.g.fillRect(0,0,getWidth(),getHeight());
-					this.renderer.update();
-					this.renderer.render(this.g);
+					this.renderer.screen(this.g);
 					this.bufferStrategy.show();
 					this.g.dispose();
 				}
@@ -91,4 +79,13 @@ public class MainContainer extends JPanel implements Runnable {
 			}
 		}
 	}
+	
+	
+	private int bufferSize = 2;
+	private Graphics g;
+	private JFrame frame;
+	private FrameRate rate;
+	private RenderingDelegator renderer;
+	private BufferStrategy bufferStrategy;
+	
 }

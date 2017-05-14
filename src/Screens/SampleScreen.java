@@ -3,6 +3,7 @@ package Screens;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import Effects.EffectDelegation;
 import Effects.SampleEffect;
 
 /**
@@ -13,7 +14,7 @@ public class SampleScreen implements Screen {
 	int x;
 	int y;
 	int counter;
-	SampleEffect effect;
+	EffectDelegation delegator;
 
 	/**
 	 * 画面病がのための初期化処理をします
@@ -23,9 +24,10 @@ public class SampleScreen implements Screen {
 	public void initialize() {
 		/* ここに初期化したい処理を書きます */
 		this.x=0;
-		this.y=80;
+		this.y=30;
 		this.counter=15;
-		this.effect=new SampleEffect();
+		this.delegator=new EffectDelegation();
+		this.delegator.setEffect(new SampleEffect());
 	}
 
 	/**
@@ -50,13 +52,10 @@ public class SampleScreen implements Screen {
 		g.fillOval(this.x, this.y, 100, 100);
 		
 		if(this.counter%100==0){
-			System.out.println("create effect"); //$NON-NLS-1$
-			this.effect=new SampleEffect();
+			this.delegator.setEffect(new SampleEffect());
 		}
-		if(this.effect!=null){
-			this.effect.update();
-			this.effect.render(g);
-		}
+
+		this.delegator.effect(g);
 	}
 
 	/**

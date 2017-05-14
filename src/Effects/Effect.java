@@ -1,6 +1,7 @@
 package Effects;
 
 import java.awt.Graphics;
+import java.util.EventListener;
 
 /**
  * エフェクトインターフェース<br>
@@ -8,7 +9,7 @@ import java.awt.Graphics;
  * @author arabian9ts
  *
  */
-public interface Effect {
+public interface Effect extends EventListener {
 
 	/**
 	 * エフェクトの初期化関数<br>
