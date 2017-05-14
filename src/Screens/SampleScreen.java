@@ -25,7 +25,7 @@ public class SampleScreen implements Screen {
 		this.x=0;
 		this.y=80;
 		this.counter=15;
-		(this.effect=new SampleEffect()).start();
+		this.effect=new SampleEffect();
 	}
 
 	/**
@@ -49,12 +49,14 @@ public class SampleScreen implements Screen {
 		g.setColor(Color.blue);
 		g.fillOval(this.x, this.y, 100, 100);
 		
-		if(this.counter%150==0){
+		if(this.counter%100==0){
 			System.out.println("create effect"); //$NON-NLS-1$
-			(this.effect=new SampleEffect()).start();
+			this.effect=new SampleEffect();
 		}
-		if(this.effect!=null)
+		if(this.effect!=null){
+			this.effect.update();
 			this.effect.render(g);
+		}
 	}
 
 	/**

@@ -8,12 +8,7 @@ import java.awt.Graphics;
  * @author arabian9ts
  *
  */
-public interface Effect extends Runnable {
-	
-	/**
-	 * エフェクトスレッドをスタートします
-	 */
-	public void start();
+public interface Effect {
 
 	/**
 	 * エフェクトの初期化関数<br>

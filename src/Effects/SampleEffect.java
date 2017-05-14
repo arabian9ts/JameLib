@@ -22,18 +22,8 @@ public class SampleEffect implements Effect {
 	 */
 	public SampleEffect() {
 		initialize();
-		(new Thread(this)).start();
 	}
 	
-
-	/**
-	 * エフェクトのスレッドをスタートします
-	 * @see Effects.Effect#start()
-	 */
-	@Override
-	public void start() {
-		(new Thread(this)).start();
-	}
 	
 	/**
 	 * エフェクトの初期化をします
@@ -42,7 +32,7 @@ public class SampleEffect implements Effect {
 	@Override
 	public void initialize(){
 		try {
-			this.image = (ImageLoader.loadImage("images/sample_effect.jpg")); //$NON-NLS-1$
+			this.image = (ImageLoader.loadImage("images/effect/sample_effect.jpg")); //$NON-NLS-1$
 		}catch(NotFoundException en){
 			en.printStackTrace();
 		}
@@ -57,28 +47,7 @@ public class SampleEffect implements Effect {
 	 */
 	@Override
 	public void update(){
-		this.radius+=3;
-	}
-
-	/**
-	 * Runnableインターフェースrunメソッド
-	 * @see java.lang.Runnable#run()
-	 */
-	@Override
-	public void run() {
-		while (true) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			update();
-			//render(MainContainer.g);
-			System.out.println("running"); //$NON-NLS-1$
-			if (this.radius >= 200) {
-				return;
-			}
-		}
+		this.radius+=1;
 	}
 
 
