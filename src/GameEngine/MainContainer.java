@@ -21,7 +21,7 @@ public class MainContainer extends JPanel implements Runnable {
 	/**
 	 * 
 	 */
-	public static volatile Graphics g;
+	Graphics g;
 	JFrame frame;
 	FrameRate rate;
 	RenderingScreen renderer;
