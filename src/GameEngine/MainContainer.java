@@ -64,8 +64,7 @@ public class MainContainer extends JPanel implements Runnable {
 				this.g = this.bufferStrategy.getDrawGraphics();
 				if (!this.bufferStrategy.contentsLost()) {
 					this.g.setColor(Color.black);
-					this.g.fillRect(0, 0, 300, 300);
-					this.g.fillRect(0,0,getWidth(),getHeight());
+					this.g.fillRect(0,0,getWidth()+50,getHeight()+50);
 					this.renderer.screen(this.g);
 					this.bufferStrategy.show();
 					this.g.dispose();

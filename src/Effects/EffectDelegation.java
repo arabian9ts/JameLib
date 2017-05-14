@@ -8,7 +8,7 @@ import java.awt.Graphics;
  *
  */
 public class EffectDelegation {
-	Effect effect;
+	private Effect effect;
 	
 	/**
 	 * デフォルトコンストラクタ

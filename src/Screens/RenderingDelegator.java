@@ -11,8 +11,8 @@ import java.util.HashMap;
  *
  */
 public class RenderingDelegator {
-	Screen current;
-	HashMap<String, Screen> screen_map=new HashMap<String, Screen>();
+	private Screen current;
+	private HashMap<String, Screen> screen_map=new HashMap<String, Screen>();
 	
 	/**
 	 * スクリーンを切り替えます

@@ -13,9 +13,9 @@ import Utilities.ImageLoader;
  *
  */
 public class SampleEffect implements Effect {
-	int R = 10;
-	int radius = this.R;
-	Image image;
+	private int R = 10;
+	private int radius = this.R;
+	private Image image;
 
 	/**
 	 * エフェクトの初期化コンストラクタ

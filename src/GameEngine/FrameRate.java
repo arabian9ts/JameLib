@@ -6,11 +6,11 @@ package GameEngine;
  *
  */
 public class FrameRate {
-	int fps = 60;
-	long error;
-	long idealSleep;
-	long prevTime;
-	long currTime;
+	private int fps = 60;
+	private long error;
+	private long idealSleep;
+	private long prevTime;
+	private long currTime;
 	
 	/**
 	 * デフォルトコンストラクタ

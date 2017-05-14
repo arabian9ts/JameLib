@@ -11,10 +11,10 @@ import Effects.SampleEffect;
  *
  */
 public class SampleScreen implements Screen {
-	int x;
-	int y;
-	int counter;
-	EffectDelegation delegator;
+	private int x;
+	private int y;
+	private int counter;
+	private EffectDelegation delegator=new EffectDelegation();
 
 	/**
 	 * 画面病がのための初期化処理をします
@@ -26,7 +26,6 @@ public class SampleScreen implements Screen {
 		this.x=0;
 		this.y=30;
 		this.counter=15;
-		this.delegator=new EffectDelegation();
 		this.delegator.setEffect(new SampleEffect());
 	}
 
@@ -39,6 +38,10 @@ public class SampleScreen implements Screen {
 		/* ここに更新したい処理を書きます */
 		this.x=this.x%500+1;
 		this.counter=this.counter%150+1;
+		
+		if(this.counter%100==0){
+			this.delegator.setEffect(new SampleEffect());
+		}
 	}
 
 	/**
@@ -50,10 +53,6 @@ public class SampleScreen implements Screen {
 		/* ここに描画したいものを書きます */
 		g.setColor(Color.blue);
 		g.fillOval(this.x, this.y, 100, 100);
-		
-		if(this.counter%100==0){
-			this.delegator.setEffect(new SampleEffect());
-		}
 
 		this.delegator.effect(g);
 	}
