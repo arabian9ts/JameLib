@@ -7,13 +7,13 @@ import java.awt.Graphics;
  * @author arabian9ts
  *
  */
-public class EffectDelegation {
-	private Effect effect;
+public class EffectDelegator {
+	private IEffectDelegation _effect;
 	
 	/**
 	 * デフォルトコンストラクタ
 	 */
-	public EffectDelegation(){
+	public EffectDelegator(){
 		//
 	}
 	
@@ -21,9 +21,9 @@ public class EffectDelegation {
 	 * エフェクトリスナをセットします
 	 * @param eff エフェクトリスナ
 	 */
-	public void setEffect(Effect eff){
-		this.effect=eff;
-		this.effect.initialize();
+	public void setEffect(IEffectDelegation eff){
+		this._effect=eff;
+		this._effect.initialize();
 	}
 	
 	/**
@@ -31,9 +31,9 @@ public class EffectDelegation {
 	 * @param g グラフィックス
 	 */
 	public void effect(Graphics g){
-		if(this.effect!=null){
-			this.effect.update();
-			this.effect.render(g);
+		if(this._effect!=null){
+			this._effect.update();
+			this._effect.render(g);
 		}
 	}
 }

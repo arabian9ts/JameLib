@@ -6,26 +6,26 @@ package GameEngine;
  *
  */
 public class FrameRate {
-	private int fps = 60;
-	private long error;
-	private long idealSleep;
-	private long prevTime;
-	private long currTime;
+	private int _fps = 60;
+	private long _error;
+	private long _idealSleep;
+	private long _prevTime;
+	private long _currTime;
 	
 	/**
 	 * デフォルトコンストラクタ
 	 */
 	public FrameRate(){
-		this.error = 0;
-		this.idealSleep = (1000 << 16) / this.fps;
-		this.currTime = System.currentTimeMillis() << 16;
+		this._error = 0;
+		this._idealSleep = (1000 << 16) / this._fps;
+		this._currTime = System.currentTimeMillis() << 16;
 	}
 	
 	/**
 	 * 計測を開始します
 	 */
 	public void checkin(){
-		this.prevTime = this.currTime;
+		this._prevTime = this._currTime;
 	}
 	
 	/**
@@ -33,13 +33,13 @@ public class FrameRate {
 	 * @return スリープすべき時間
 	 */
 	public long checkout(){
-		this.currTime = System.currentTimeMillis() << 16;
-		long sleepTime = this.idealSleep - (this.currTime - this.prevTime) - this.error;
+		this._currTime = System.currentTimeMillis() << 16;
+		long sleepTime = this._idealSleep - (this._currTime - this._prevTime) - this._error;
 		if (sleepTime < 0x20000)
 			sleepTime = 0x20000;
-		this.prevTime = this.currTime;
-		this.currTime = System.currentTimeMillis() << 16;
-		this.error = this.currTime - this.prevTime - sleepTime;
+		this._prevTime = this._currTime;
+		this._currTime = System.currentTimeMillis() << 16;
+		this._error = this._currTime - this._prevTime - sleepTime;
 		return sleepTime >> 16;
 	}
 }

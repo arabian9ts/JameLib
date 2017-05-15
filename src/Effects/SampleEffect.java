@@ -12,10 +12,9 @@ import Utilities.ImageLoader;
  * @author arabian9ts
  *
  */
-public class SampleEffect implements Effect {
-	private int R = 10;
-	private int radius = this.R;
-	private Image image;
+public class SampleEffect implements IEffectDelegation {
+	private int _radius = 10;
+	private Image _image;
 
 	/**
 	 * エフェクトの初期化コンストラクタ
@@ -27,12 +26,12 @@ public class SampleEffect implements Effect {
 	
 	/**
 	 * エフェクトの初期化をします
-	 * @see Effects.Effect#initialize()
+	 * @see Effects.IEffectDelegation#initialize()
 	 */
 	@Override
 	public void initialize(){
 		try {
-			this.image = (ImageLoader.loadImage("images/effect/sample_effect.jpg")); //$NON-NLS-1$
+			this._image = (ImageLoader.loadImage("images/effect/sample_effect.jpg")); //$NON-NLS-1$
 		}catch(NotFoundException en){
 			en.printStackTrace();
 		}
@@ -43,11 +42,11 @@ public class SampleEffect implements Effect {
 	
 	/**
 	 * エフェクトの更新を行います
-	 * @see Effects.Effect#update()
+	 * @see Effects.IEffectDelegation#update()
 	 */
 	@Override
 	public void update(){
-		this.radius+=1;
+		this._radius+=1;
 	}
 
 
@@ -55,12 +54,12 @@ public class SampleEffect implements Effect {
 	 * 画面描画関数<br>
 	 * エフェクトを画面上に描画する
 	 * @param g グラフィックス
-	 * @see Effects.Effect#render(java.awt.Graphics)
+	 * @see Effects.IEffectDelegation#render(java.awt.Graphics)
 	 */
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(this.image, 200 - this.radius, 300
-				- this.radius, 2 * this.radius, 2 * this.radius, null);
+		g.drawImage(this._image, 200 - this._radius, 300
+				- this._radius, 2 * this._radius, 2 * this._radius, null);
 		
 	}
 

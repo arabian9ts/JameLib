@@ -1,15 +1,14 @@
 package Effects;
 
 import java.awt.Graphics;
-import java.util.EventListener;
 
 /**
- * エフェクトインターフェース<br>
+ * エフェクト描画委譲のためのインターフェース<br>
  * エフェクトを使用する場合はこのインターフェースを実装してください
  * @author arabian9ts
  *
  */
-public interface Effect extends EventListener {
+public interface IEffectDelegation {
 
 	/**
 	 * エフェクトの初期化関数<br>

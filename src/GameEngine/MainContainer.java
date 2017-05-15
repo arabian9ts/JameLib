@@ -27,12 +27,12 @@ public class MainContainer extends JPanel implements Runnable {
 		frame.setSize(WindowParams.width, WindowParams.height);
 		frame.setBackground(Color.white);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.createBufferStrategy(this.bufferSize);
+		frame.createBufferStrategy(this._bufferSize);
 		
-		this.frame = frame;
-		this.rate=new FrameRate();
-		this.renderer = new RenderingDelegator();
-		this.bufferStrategy = this.frame.getBufferStrategy();
+		this._frame = frame;
+		this._rate=new FrameRate();
+		this._renderer = new RenderingDelegator();
+		this._bufferStrategy = this._frame.getBufferStrategy();
 		
 		screenRegister();
 	}
@@ -41,8 +41,8 @@ public class MainContainer extends JPanel implements Runnable {
 	 * スクリーンを登録します
 	 */
 	public void screenRegister(){
-		this.renderer.addScreen("sample", new SampleScreen()); //$NON-NLS-1$
-		this.renderer.swapScreen("sample"); //$NON-NLS-1$
+		this._renderer.bindRenderer("sample", new SampleScreen()); //$NON-NLS-1$
+		this._renderer.swapChain("sample"); //$NON-NLS-1$
 	}
 
 	/**
@@ -59,19 +59,19 @@ public class MainContainer extends JPanel implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			this.rate.checkin();
-			for (int i = 0; i < this.bufferSize; i++) {
-				this.g = this.bufferStrategy.getDrawGraphics();
-				if (!this.bufferStrategy.contentsLost()) {
-					this.g.setColor(Color.black);
-					this.g.fillRect(0,0,getWidth()+50,getHeight()+50);
-					this.renderer.screen(this.g);
-					this.bufferStrategy.show();
-					this.g.dispose();
+			this._rate.checkin();
+			for (int i = 0; i < this._bufferSize; i++) {
+				this._g = this._bufferStrategy.getDrawGraphics();
+				if (!this._bufferStrategy.contentsLost()) {
+					this._g.setColor(Color.black);
+					this._g.fillRect(0,0,getWidth()+50,getHeight()+50);
+					this._renderer.delegate(this._g);
+					this._bufferStrategy.show();
+					this._g.dispose();
 				}
 			}
 			try{
-				Thread.sleep(this.rate.checkout());
+				Thread.sleep(this._rate.checkout());
 			}
 			catch(InterruptedException e){
 				Thread.currentThread().interrupt();
@@ -80,11 +80,11 @@ public class MainContainer extends JPanel implements Runnable {
 	}
 	
 	
-	private int bufferSize = 2;
-	private Graphics g;
-	private JFrame frame;
-	private FrameRate rate;
-	private RenderingDelegator renderer;
-	private BufferStrategy bufferStrategy;
+	private int _bufferSize = 2;
+	private Graphics _g;
+	private JFrame _frame;
+	private FrameRate _rate;
+	private RenderingDelegator _renderer;
+	private BufferStrategy _bufferStrategy;
 	
 }
