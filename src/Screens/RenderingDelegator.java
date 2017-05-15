@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.util.HashMap;
 
 /**
- * スクリーンを委譲するクラス<br>
+ * スクリーンの描画を委譲するクラス<br>
  * 作成したスクリーンモードの登録、切り替えを行います<br>
  * また、スクリーンの実態に更新、描画を委譲します
  * @author arabian9ts
@@ -31,7 +31,7 @@ public class RenderingDelegator {
 	/**
 	 * スクリーンを追加します
 	 * @param identifier 登録するスクリーンの識別子
-	 * @param screen 登録するスクリーンの
+	 * @param screen 登録するスクリーンの識別子
 	 */
 	public void bindRenderer(String identifier, IRenderingDelegation screen){
 		this._deleg_map.put(identifier, screen);

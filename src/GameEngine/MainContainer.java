@@ -31,7 +31,7 @@ public class MainContainer extends JPanel implements Runnable {
 		
 		this._frame = frame;
 		this._rate=new FrameRate();
-		this._renderer = new RenderingDelegator();
+		this._relegator = new RenderingDelegator();
 		this._bufferStrategy = this._frame.getBufferStrategy();
 		
 		screenRegister();
@@ -41,8 +41,8 @@ public class MainContainer extends JPanel implements Runnable {
 	 * スクリーンを登録します
 	 */
 	public void screenRegister(){
-		this._renderer.bindRenderer("sample", new SampleScreen()); //$NON-NLS-1$
-		this._renderer.swapChain("sample"); //$NON-NLS-1$
+		this._relegator.bindRenderer("sample", new SampleScreen()); //$NON-NLS-1$
+		this._relegator.swapChain("sample"); //$NON-NLS-1$
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class MainContainer extends JPanel implements Runnable {
 				if (!this._bufferStrategy.contentsLost()) {
 					this._g.setColor(Color.black);
 					this._g.fillRect(0,0,getWidth()+50,getHeight()+50);
-					this._renderer.delegate(this._g);
+					this._relegator.delegate(this._g);
 					this._bufferStrategy.show();
 					this._g.dispose();
 				}
@@ -84,7 +84,7 @@ public class MainContainer extends JPanel implements Runnable {
 	private Graphics _g;
 	private JFrame _frame;
 	private FrameRate _rate;
-	private RenderingDelegator _renderer;
+	private RenderingDelegator _relegator;
 	private BufferStrategy _bufferStrategy;
 	
 }

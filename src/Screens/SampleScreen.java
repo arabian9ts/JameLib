@@ -26,7 +26,7 @@ public class SampleScreen implements IRenderingDelegation {
 		this._x=0;
 		this._y=30;
 		this._counter=15;
-		this._delegator.setEffect(new SampleEffect());
+		this._delegator.bindEffect(new SampleEffect());
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class SampleScreen implements IRenderingDelegation {
 		this._counter=this._counter%150+1;
 		
 		if(this._counter%100==0){
-			this._delegator.setEffect(new SampleEffect());
+			this._delegator.bindEffect(new SampleEffect());
 		}
 	}
 
@@ -54,7 +54,7 @@ public class SampleScreen implements IRenderingDelegation {
 		g.setColor(Color.blue);
 		g.fillOval(this._x, this._y, 100, 100);
 
-		this._delegator.effect(g);
+		this._delegator.delegate(g);
 	}
 
 	/**

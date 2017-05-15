@@ -21,7 +21,7 @@ public class EffectDelegator {
 	 * エフェクトリスナをセットします
 	 * @param eff エフェクトリスナ
 	 */
-	public void setEffect(IEffectDelegation eff){
+	public void bindEffect(IEffectDelegation eff){
 		this._effect=eff;
 		this._effect.initialize();
 	}
@@ -30,7 +30,7 @@ public class EffectDelegator {
 	 * エフェクトの更新、描画を行います
 	 * @param g グラフィックス
 	 */
-	public void effect(Graphics g){
+	public void delegate(Graphics g){
 		if(this._effect!=null){
 			this._effect.update();
 			this._effect.render(g);
