@@ -1,6 +1,7 @@
 package Base;
 
 /**
+ * 四角形のノード
  * @author arabian9ts
  *
  */

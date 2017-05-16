@@ -2,6 +2,7 @@ package Screens;
 
 import java.awt.Graphics;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * スクリーンの描画を委譲するクラス<br>
@@ -47,6 +48,14 @@ public class RenderingDelegator {
 			this._deleg_tar.update();
 			this._deleg_tar.render(g);
 		}
+	}
+	
+	/**
+	 * レンダリングの委譲先のmapを返す
+	 * @return レンダリングの委譲先map
+	 */
+	public Map<String, IRenderingDelegation> DelegateMap(){
+		return this._deleg_map;
 	}
 	
 }

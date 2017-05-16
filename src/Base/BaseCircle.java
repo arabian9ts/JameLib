@@ -1,14 +1,15 @@
 package Base;
 
 /**
+ * 円形のノード
  * @author arabian9ts
  *
  */
-public class BaseCircle {
+public class BaseCircle extends BaseNode {
 	protected int radius;
 	
 	/**
-	 * デフォルトコンストラクタ
+	 * デフォルトコンストラiクタ
 	 */
 	protected BaseCircle(){
 		this.radius=0;
