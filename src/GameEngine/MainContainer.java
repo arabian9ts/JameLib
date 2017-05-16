@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Constants.WindowParams;
+import KeyAction.KeyDelegator;
+import KeyAction.SampleKeyAction;
 import Screens.RenderingDelegator;
 import Screens.SampleScreen;
 
@@ -23,6 +25,7 @@ public class MainContainer extends JPanel implements Runnable {
 	 */
 	public MainContainer(JFrame frame) {
 		setBackground(Color.black);
+		setFocusable(true);
 		frame.setVisible(true);
 		frame.setSize(WindowParams.width, WindowParams.height);
 		frame.setBackground(Color.white);
@@ -31,18 +34,24 @@ public class MainContainer extends JPanel implements Runnable {
 		
 		this._frame = frame;
 		this._rate=new FrameRate();
-		this._relegator = new RenderingDelegator();
+		this._rdelegator = new RenderingDelegator();
+		this._kdelegator=new KeyDelegator();
 		this._bufferStrategy = this._frame.getBufferStrategy();
 		
 		screenRegister();
+
 	}
 	
 	/**
 	 * スクリーンを登録します
 	 */
 	public void screenRegister(){
-		this._relegator.bindRenderer("sample", new SampleScreen()); //$NON-NLS-1$
-		this._relegator.swapChain("sample"); //$NON-NLS-1$
+		SampleScreen sample=new SampleScreen();
+		this._rdelegator.bindRenderer("sample", sample); //$NON-NLS-1$
+		this._kdelegator.bindKeyDelegation("sample", new SampleKeyAction(), sample); //$NON-NLS-1$
+		
+		this._rdelegator.swapChain("sample"); //$NON-NLS-1$
+		this._kdelegator.linkKeyDeielgation(this, "sample"); //$NON-NLS-1$
 	}
 
 	/**
@@ -64,10 +73,11 @@ public class MainContainer extends JPanel implements Runnable {
 				this._g = this._bufferStrategy.getDrawGraphics();
 				if (!this._bufferStrategy.contentsLost()) {
 					this._g.setColor(Color.black);
-					this._g.fillRect(0,0,getWidth()+50,getHeight()+50);
-					this._relegator.delegate(this._g);
+					this._g.fillRect(0,0,WindowParams.width,WindowParams.height);
+					this._rdelegator.delegate(this._g);
 					this._bufferStrategy.show();
 					this._g.dispose();
+					requestFocusInWindow();
 				}
 			}
 			try{
@@ -84,7 +94,8 @@ public class MainContainer extends JPanel implements Runnable {
 	private Graphics _g;
 	private JFrame _frame;
 	private FrameRate _rate;
-	private RenderingDelegator _relegator;
+	private RenderingDelegator _rdelegator;
 	private BufferStrategy _bufferStrategy;
+	private KeyDelegator _kdelegator;
 	
 }
