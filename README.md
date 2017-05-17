@@ -7,7 +7,6 @@
 
 ### スクリーンの作成例
     public class SampleScreen implements IRenderingDelegation {
-    	private EffectDelegator _delegator=new EffectDelegator();
 
     	@Override
     	public void initialize() {
@@ -49,7 +48,7 @@
 
     }
 
-上記の~で区切られたエリアは、省略したコードが存在することを表します。スクリーンの登録に必要な操作は、MainContainerクラスのscreenRegister()メソッドにaddScreen()を書き足すだけです。実行時には、最後に追加されたスクリーンが初期値として扱われるので、screenRegister()の最後で画面切り替えメソッドのswapScreen()で最初のスクリーンに入れ替えることを忘れないでください。
+上記の~で区切られたエリアは、省略したコードが存在することを表します。スクリーンの登録に必要な操作は、MainContainerクラスのscreenRegister()メソッドにbindRenderer()を書き足すだけです。実行時には、最後に追加されたスクリーンが初期値として扱われるので、screenRegister()の最後で画面切り替えメソッドのswapChain()で最初のスクリーンに入れ替えることを忘れないでください。
 
 
 ### エフェクトの作成
@@ -125,6 +124,105 @@
 
 1つ目の注意事項に関しては、特定の条件を満たした場合にのみエフェクトを紐付けするようにするか、カウンターを用意すれば解決できるでしょう。<br>
 2つ目は、EffectDelegationにEffectのリスト構造を持たせ、その要素を切り替えることで対応ができるでしょう。
+
+### コンテンツの読み込み
+プログラムのアイコンやスクリーンの装飾のために、画像を取り扱いたい場合があります。JameLibでは、初期化関数などに次のように記述することで、画像の読み込みができます。
+
+    public void initialize(){
+        try {
+            this._image = (ImageLoader.loadImage("images/effect/sample_effect.jpg"));
+        }catch(NotFoundException en){
+            en.printStackTrace();
+        }
+        catch (ImageLoadException ei) {
+            ei.printStackTrace();
+        }
+    }
+
+画像の読み込みでは、例外が発生する可能性があるので、try-catchブロックで囲む必要があります。また、NotFoundExceptionは、指定したパスに画像が存在していないことを表現します。指定したパスに画像が存在した上で、画像の読み込みに失敗した場合は、ImageLoadExceptionが発生します。サウンドの読み込みについても同様です。
+
+### キードード入力の利用について
+ゲームを作成する上で、キーボードからの入力を受け付けたいときは以下のようにします。
+
++ 特定のスクリーンに対するキーアクションクラスを定義します。
++ 作成したクラスにIKeyDelegationを実装(implements)します。
++ MainContainerのregistScreen()にキーアクションの紐付けの処理を追記します。  
+
+キーアクションを行うクラスは以下のように定義します。
+
+    public class SampleKeyAction implements IKeyDelegation {
+    	private IRenderingDelegation _renderer;
+
+    	@Override
+    	public void keyTyped(KeyEvent e) {
+    		//
+    	}
+
+    	@Override
+    	public void keyPressed(KeyEvent e) {
+    		System.out.println("typed!");
+    		this._renderer.initialize();
+    	}
+
+    	@Override
+    	public void keyReleased(KeyEvent e) {
+    		//
+    	}
+
+    	@Override
+    	public void bindDependedScreen(IRenderingDelegation renderer) {
+    		this._renderer=renderer;
+    	}
+
+    }
+
+キーアクションクラスにIRenderingDelegationのインスタンスを持たせれば、キーアクションからスクリーンの処理を制御することができます。また、MainContainerのscreenRegister()には次のように追記します。
+
+    public class MainContainer extends JPanel implements Runnable {
+        private KeyDelegator _kdelegator;
+
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public void screenRegister(){
+            SampleScreen sample=new SampleScreen();
+            this._rdelegator.bindRenderer("sample", sample);
+            this._kdelegator.bindKeyDelegation("sample", new SampleKeyAction(), sample);
+
+            this._rdelegator.swapChain("sample");
+            this._kdelegator.linkKeyDeielgation(this, "sample");
+        }
+
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    }
+
+MainContainerの持つKeyDelegatorインスタンスに対し、bindKeyDelegation()でスクリーンとキーアクションを紐付けます。この際、対応するスクリーンの識別子、作成したキーアクションのインスタンス、それに対応するスクリーンの実体を渡します。screenRegister()の最後に、swapChain()で最初に用いるスクリーンにスワップしたあと、linkKeyDeielgation()で対応するキーアクションクラスの識別子を選択します。これによりキーボードからの入力を受け付けることができます。
+<br>
+この例では、JPanelに対してキーアクションを紐付けし、キーインプットをリッスンしていますが、その他のコンポーネントにキーアクションを紐付けたい場合は、linkKeyDeielgation()の第一引数に指定したいコンポーネントを指定してください。
+
+### フレームレートの固定
+メインメソッドは最初以下のようになっています。
+
+    public class GameMain {
+
+    	public static void main(String[] args) {
+    		JFrame frame=new JFrame();
+    		frame.setFocusable(true);
+    		frame.setVisible(true);
+    		frame.setSize(WindowParams.width, WindowParams.height);
+    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    		MainContainer container=new MainContainer(frame, new FrameRate(60));
+    		frame.getContentPane().add(container);
+
+    		container.game_start();
+    	}
+    }
+
+メインメソッド内でメインコンテナのインスタンスを生成する際、第二引数にFrameRateインスタンスを指定することができます。FrameRateインスタンスのコンストラクタは、希望するフレームレートをint型で受け取って初期化を行います。もし、引数でフレームレートを指定しなかった場合、デフォルトでフレームレート60で固定されます。
+<br>
+
+---説明は委譲です。---
 
 License
 ----------

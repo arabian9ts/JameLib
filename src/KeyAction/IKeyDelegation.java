@@ -15,6 +15,6 @@ public interface IKeyDelegation extends KeyListener {
 	 * 関連するスクリーンのインスタンスを送信します
 	 * @param renderer キーに対応するスクリーン
 	 */
-	public void dependency(IRenderingDelegation renderer);
+	public void bindDependedScreen(IRenderingDelegation renderer);
 
 }
