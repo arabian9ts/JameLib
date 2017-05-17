@@ -5,7 +5,7 @@ package GameEngine;
  * @author arabian9ts
  *
  */
-public class FrameRate {
+public class FrameRate implements IFrameRate {
 	private int _fps = 60;
 	private long _error;
 	private long _idealSleep;
@@ -16,6 +16,16 @@ public class FrameRate {
 	 * デフォルトコンストラクタ
 	 */
 	public FrameRate(){
+		this(60);
+	}
+	
+	/**
+	 * コンストラクタです<br>
+	 * フレームレートを設定します
+	 * @param rate 指定するフレームレート
+	 */
+	public FrameRate(int rate){
+		this._fps=rate;
 		this._error = 0;
 		this._idealSleep = (1000 << 16) / this._fps;
 		this._currTime = System.currentTimeMillis() << 16;

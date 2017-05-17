@@ -22,24 +22,19 @@ public class MainContainer extends JPanel implements Runnable {
 	/**
 	 * コンポーネントの初期化を行います
 	 * @param frame メインフレーム
+	 * @param frame_rater フレームレートインターフェース
 	 */
-	public MainContainer(JFrame frame) {
+	public MainContainer(JFrame frame, IFrameRate frame_rater) {
 		setBackground(Color.black);
-		setFocusable(true);
-		frame.setVisible(true);
-		frame.setSize(WindowParams.width, WindowParams.height);
-		frame.setBackground(Color.white);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.createBufferStrategy(this._bufferSize);
 		
 		this._frame = frame;
-		this._rate=new FrameRate();
+		this._rater=new FrameRate();
 		this._rdelegator = new RenderingDelegator();
 		this._kdelegator=new KeyDelegator();
 		this._bufferStrategy = this._frame.getBufferStrategy();
 		
 		screenRegister();
-
 	}
 	
 	/**
@@ -68,7 +63,7 @@ public class MainContainer extends JPanel implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			this._rate.checkin();
+			this._rater.checkin();
 			for (int i = 0; i < this._bufferSize; i++) {
 				this._g = this._bufferStrategy.getDrawGraphics();
 				if (!this._bufferStrategy.contentsLost()) {
@@ -81,7 +76,7 @@ public class MainContainer extends JPanel implements Runnable {
 				}
 			}
 			try{
-				Thread.sleep(this._rate.checkout());
+				Thread.sleep(this._rater.checkout());
 			}
 			catch(InterruptedException e){
 				Thread.currentThread().interrupt();
@@ -93,7 +88,7 @@ public class MainContainer extends JPanel implements Runnable {
 	private int _bufferSize = 2;
 	private Graphics _g;
 	private JFrame _frame;
-	private FrameRate _rate;
+	private IFrameRate _rater;
 	private RenderingDelegator _rdelegator;
 	private BufferStrategy _bufferStrategy;
 	private KeyDelegator _kdelegator;
