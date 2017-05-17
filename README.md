@@ -6,6 +6,8 @@
 <br>図のScreens階層に、SampleScreenに倣って自分の作成したいスクリーンクラスを作成します。その際、IRenderingDelegationインターフェースを実装(implements)するようにしてください。  
 
 ### スクリーンの作成例
+スクリーンを作成します。
+
     public class SampleScreen implements IRenderingDelegation {
 
     	@Override
@@ -34,14 +36,16 @@
 これは簡易的なスクリーンであり、拡張することができます。各自で実装した型、変数を用いてスクリーンを装飾してください。
 
 ### スクリーンの登録
+作成したスクリーンは以下のようにコンテナで登録します。
+
     public class MainContainer extends JPanel implements Runnable {
 
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         public void screenRegister(){
-      		this._relegator.bindRenderer("sample", new SampleScreen());
-              ...
-      		this._relegator.swapChain("sample");
+      		  this._relegator.bindRenderer("sample", new SampleScreen());
+            ...
+      		  this._relegator.swapChain("sample");
         }
 
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,6 +60,8 @@
 <br>図のEffects階層に、SampleEffectに倣って自分の作成したいエフェクトクラスを作成します。その際、IEffectDelegationインターフェースを実装(implements)するようにしてください。  
 
 ### エフェクトの作成例
+以下のようにエフェクトクラスを作成します。
+
     public class SampleEffect implements IEffectDelegation {
     	int radius = 10;
     	Image image;
@@ -92,6 +98,8 @@
 これは簡易的なエフェクトであり、より高度なエフェクトに拡張することが可能です。作成したエフェクトを使用するには、エフェクトを使用したいスクリーン内で以下のように記述します。
 
 ### エフェクトの登録
+作成したエフェクトをスクリーンに登録します。
+
     public class SampleScreen implements IRenderingDelegation {
 
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -220,6 +228,10 @@ MainContainerの持つKeyDelegatorインスタンスに対し、bindKeyDelegatio
     }
 
 メインメソッド内でメインコンテナのインスタンスを生成する際、第二引数にFrameRateインスタンスを指定することができます。FrameRateインスタンスのコンストラクタは、希望するフレームレートをint型で受け取って初期化を行います。もし、引数でフレームレートを指定しなかった場合、デフォルトでフレームレート60で固定されます。
+
+### ベースノードの利用
+シューティングゲームなどの敵や自機などは画像で装飾されますが、実体はただの円や四角形です。JameLibには、そのようなノード(オブジェクト)が予め準備されており、比較的容易にノードを作成することが可能です。
+
 <br>
 
 ---説明は委譲です。---
