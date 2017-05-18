@@ -3,7 +3,7 @@ package Screens;
 import java.awt.Graphics;
 
 /**
- * 画面描画を以上するためのインターフェース
+ * 画面描画を委譲するためのインターフェース
  * @author arabian9ts
  */
 public interface IRenderingDelegation {

@@ -47,7 +47,7 @@ public class KeyDelegator {
 	public void bindKeyDelegation(String identifier, IKeyDelegation delegation, IRenderingDelegation renderer){
 		this._deleg_map.put(identifier, delegation);
 		this._deleg_tar=delegation;
-		this._deleg_tar.dependency(renderer);
+		this._deleg_tar.bindDependedDelegator(renderer);
 	}
 
 }

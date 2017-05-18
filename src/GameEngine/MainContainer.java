@@ -10,15 +10,19 @@ import javax.swing.JPanel;
 import Constants.WindowParams;
 import KeyAction.KeyDelegator;
 import KeyAction.SampleKeyAction;
+import KeyAction.SampleKeyAction2;
 import Screens.RenderingDelegator;
 import Screens.SampleScreen;
+import Screens.SampleScreen2;
+import SelfEvents.ISwichScreenReceiver;
+import SelfEvents.SwichScreenAction;
 
 /**
  * 画面の構成要素を配置するコンテナ
  * @author arabian9ts
  *
  */
-public class MainContainer extends JPanel implements Runnable {
+public class MainContainer extends JPanel implements Runnable, ISwichScreenReceiver {
 	/**
 	 * コンポーネントの初期化を行います
 	 * @param frame メインフレーム
@@ -42,8 +46,16 @@ public class MainContainer extends JPanel implements Runnable {
 	 */
 	public void screenRegister(){
 		SampleScreen sample=new SampleScreen();
+		SampleKeyAction sampleKey=new SampleKeyAction();
+		sampleKey.registReceiver(this);
 		this._rdelegator.bindRenderer("sample", sample); //$NON-NLS-1$
-		this._kdelegator.bindKeyDelegation("sample", new SampleKeyAction(), sample); //$NON-NLS-1$
+		this._kdelegator.bindKeyDelegation("sample", sampleKey, sample); //$NON-NLS-1$
+		
+		SampleScreen2 sample2=new SampleScreen2();
+		SampleKeyAction2 sampleKey2=new SampleKeyAction2();
+		sampleKey2.registReceiver(this);
+		this._rdelegator.bindRenderer("sample2", sample2); //$NON-NLS-1$
+		this._kdelegator.bindKeyDelegation("sample2", sampleKey2, sample2); //$NON-NLS-1$
 		
 		this._rdelegator.swapChain("sample"); //$NON-NLS-1$
 		this._kdelegator.linkKeyDeielgation(this, "sample"); //$NON-NLS-1$
@@ -84,6 +96,15 @@ public class MainContainer extends JPanel implements Runnable {
 		}
 	}
 	
+	/**
+	 * スクリーン入れ替えイベントを受信します
+	 * @see SelfEvents.ISwichScreenReceiver#swichScreenReceiver(SelfEvents.SwichScreenAction)
+	 */
+	public void swichScreenReceiver(SwichScreenAction sa) {
+		this._rdelegator.swapChain(sa.identifier);
+		this._kdelegator.linkKeyDeielgation(this, sa.identifier);
+	}
+	
 	
 	private int _bufferSize = 2;
 	private Graphics _g;
@@ -92,5 +113,6 @@ public class MainContainer extends JPanel implements Runnable {
 	private RenderingDelegator _rdelegator;
 	private BufferStrategy _bufferStrategy;
 	private KeyDelegator _kdelegator;
+
 	
 }
