@@ -7,38 +7,35 @@ import SelfEvents.ISwichScreenReceiver;
 import SelfEvents.SwichScreenAction;
 
 /**
- * サンプル画面用のキーアクション
+ * サンプルスクリーン2のキーアクションです
  * @author arabian9ts
  *
  */
-public class SampleKeyAction implements IKeyDelegation {
+public class SampleKeyAction2 implements IKeyDelegation {
 	private IRenderingDelegation _renderer;
 	private ISwichScreenReceiver _receiver;
 
 	/**
-	 * キーが押された時のSampleScreenの挙動
+	 * キーが押された時のSampleScreen2の挙動
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
-	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println("at screen 1"); //$NON-NLS-1$
+		System.out.println("at screen 2"); //$NON-NLS-1$
 		fireSwichScreenAction();
 	}
 
 	/**
-	 * キーが押されている時のSampleScreenの挙動
+	 * キーが押されている時のSampleScreen2の挙動
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
-	@Override
 	public void keyPressed(KeyEvent e) {
 		//
 	}
 
 	/**
-	 * キーが離された時のSampleScreenの挙動
+	 * キーが離された時のSampleScreen2の挙動
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
-	@Override
 	public void keyReleased(KeyEvent e) {
 		//
 	}
@@ -56,7 +53,7 @@ public class SampleKeyAction implements IKeyDelegation {
 	 * @see KeyAction.IKeyDelegation#fireSwichScreenAction()
 	 */
 	public void fireSwichScreenAction() {
-		this._receiver.swichScreenReceiver(new SwichScreenAction("sample2", this._receiver)); //$NON-NLS-1$
+		this._receiver.swichScreenReceiver(new SwichScreenAction("sample", this._receiver)); //$NON-NLS-1$
 	}
 
 	/**
@@ -66,6 +63,5 @@ public class SampleKeyAction implements IKeyDelegation {
 	public void registReceiver(ISwichScreenReceiver receiver) {
 		this._receiver=receiver;
 	}
-
 
 }

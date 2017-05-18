@@ -48,5 +48,6 @@ public class RenderingDelegator {
 			this._deleg_tar.render(g);
 		}
 	}
+
 	
 }
