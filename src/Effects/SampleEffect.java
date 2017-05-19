@@ -58,7 +58,7 @@ public class SampleEffect implements IEffectDelegation {
 	 */
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(this._image, 200 - this._radius, 300
+		g.drawImage(this._image, 230 - this._radius, 250
 				- this._radius, 2 * this._radius, 2 * this._radius, null);
 		
 	}

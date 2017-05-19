@@ -3,9 +3,6 @@ package Screens;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import Effects.EffectDelegator;
-import Effects.SampleEffect;
-
 /**
  * @author arabian9ts
  *
@@ -13,8 +10,6 @@ import Effects.SampleEffect;
 public class SampleScreen implements IRenderingDelegation {
 	private int _x;
 	private int _y;
-	private int _counter;
-	private EffectDelegator _delegator=new EffectDelegator();
 
 	/**
 	 * 画面病がのための初期化処理をします
@@ -24,9 +19,7 @@ public class SampleScreen implements IRenderingDelegation {
 	public void initialize() {
 		/* ここに初期化したい処理を書きます */
 		this._x=0;
-		this._y=30;
-		this._counter=15;
-		this._delegator.bindEffect(new SampleEffect());
+		this._y=200;
 	}
 
 	/**
@@ -37,11 +30,6 @@ public class SampleScreen implements IRenderingDelegation {
 	public void update() {
 		/* ここに更新したい処理を書きます */
 		this._x=this._x%500+1;
-		this._counter=this._counter%150+1;
-		
-		if(this._counter%100==0){
-			this._delegator.bindEffect(new SampleEffect());
-		}
 	}
 
 	/**
@@ -53,8 +41,6 @@ public class SampleScreen implements IRenderingDelegation {
 		/* ここに描画したいものを書きます */
 		g.setColor(Color.blue);
 		g.fillOval(this._x, this._y, 100, 100);
-
-		this._delegator.delegate(g);
 	}
 
 	/**
