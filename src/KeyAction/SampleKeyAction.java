@@ -47,6 +47,7 @@ public class SampleKeyAction implements IKeyDelegation {
 	 * 紐付けするスクリーンの実体
 	 * @see KeyAction.IKeyDelegation#bindDependedDelegator(Screens.IRenderingDelegation)
 	 */
+	@Override
 	public void bindDependedDelegator(IRenderingDelegation renderer) {
 		this._renderer=renderer;
 	}
@@ -55,6 +56,7 @@ public class SampleKeyAction implements IKeyDelegation {
 	 * スクリーン入れ替えイベントを発火します
 	 * @see KeyAction.IKeyDelegation#fireSwichScreenAction()
 	 */
+	@Override
 	public void fireSwichScreenAction() {
 		this._receiver.swichScreenReceiver(new SwichScreenAction("sample2", this._receiver)); //$NON-NLS-1$
 	}
@@ -63,6 +65,7 @@ public class SampleKeyAction implements IKeyDelegation {
 	 * スクリーン入れ替えイベントのレシーバーを登録します
 	 * @see KeyAction.IKeyDelegation#registReceiver(SelfEvents.ISwichScreenReceiver)
 	 */
+	@Override
 	public void registReceiver(ISwichScreenReceiver receiver) {
 		this._receiver=receiver;
 	}

@@ -159,43 +159,67 @@
 キーアクションを行うクラスは以下のように定義します。
 
     public class SampleKeyAction implements IKeyDelegation {
-    	private IRenderingDelegation _renderer;
+      	private IRenderingDelegation _renderer;
+        private ISwichScreenReceiver _receiver;
 
-    	@Override
-    	public void keyTyped(KeyEvent e) {
-    		//
-    	}
+      	@Override
+      	public void keyTyped(KeyEvent e) {
+            /* 動作確認テスト */
+            System.out.println("typed!");
+            fireSwichScreenAction
+      	}
 
-    	@Override
-    	public void keyPressed(KeyEvent e) {
-    		System.out.println("typed!");
-    		this._renderer.initialize();
-    	}
+      	@Override
+      	public void keyPressed(KeyEvent e) {
+            //
+      	}
 
-    	@Override
-    	public void keyReleased(KeyEvent e) {
-    		//
-    	}
+      	@Override
+      	public void keyReleased(KeyEvent e) {
+      		  //
+      	}
 
-    	@Override
-    	public void bindDependedScreen(IRenderingDelegation renderer) {
-    		this._renderer=renderer;
-    	}
+      	@Override
+      	public void bindDependedScreen(IRenderingDelegation renderer) {
+      		  this._renderer=renderer;
+      	}
+
+        @Override
+      	public void fireSwichScreenAction() {
+      		  this._receiver.swichScreenReceiver(
+              new SwichScreenAction("sample2", this._receiver));
+      	}
+
+        @Override
+        public void registReceiver(ISwichScreenReceiver receiver) {
+            this._receiver=receiver;
+        }
 
     }
 
-キーアクションクラスにIRenderingDelegationのインスタンスを持たせれば、キーアクションからスクリーンの処理を制御することができます。また、MainContainerのscreenRegister()には次のように追記します。
+キーアクションクラスにIRenderingDelegationのインスタンスを持たせれば、キーアクションからスクリーンの処理を制御することができます。キー入力によって画面を遷移させたいときは、ISwichScreenReceiverのインスタンスを持たせ、任意のタイミングでfireSwichScreenAction()を呼ぶことで画面遷移を実行できます。また、MainContainerのscreenRegister()を次のように変更します。
 
-    public class MainContainer extends JPanel implements Runnable {
+    public class MainContainer extends JPanel implements Runnable, ISwichScreenReceiver {
         private KeyDelegator _kdelegator;
 
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         public void screenRegister(){
+            /* 一つ目のスクリーンの登録、キーアクションの紐付け */
             SampleScreen sample=new SampleScreen();
+            SampleKeyAction sampleKey=new SampleKeyAction();
+            sampleKey.registReceiver(this);
             this._rdelegator.bindRenderer("sample", sample);
-            this._kdelegator.bindKeyDelegation("sample", new SampleKeyAction(), sample);
+            this._kdelegator.bindKeyDelegation("sample", sampleKey, sample);
 
+            /* 二つ目のスクリーンの登録、キーアクションの紐付け */
+            SampleScreen2 sample2=new SampleScreen2();
+            SampleKeyAction2 sampleKey2=new SampleKeyAction2();
+            sampleKey2.registReceiver(this);
+            this._rdelegator.bindRenderer("sample2", sample2);
+            this._kdelegator.bindKeyDelegation("sample2", sampleKey2, sample2);
+
+            /* 一つ目のスクリーンを初期スクリーンとしてセット */
             this._rdelegator.swapChain("sample");
             this._kdelegator.linkKeyDeielgation(this, "sample");
         }
@@ -204,7 +228,7 @@
 
     }
 
-MainContainerの持つKeyDelegatorインスタンスに対し、bindKeyDelegation()でスクリーンとキーアクションを紐付けます。この際、対応するスクリーンの識別子、作成したキーアクションのインスタンス、それに対応するスクリーンの実体を渡します。screenRegister()の最後に、swapChain()で最初に用いるスクリーンにスワップしたあと、linkKeyDeielgation()で対応するキーアクションクラスの識別子を選択します。これによりキーボードからの入力を受け付けることができます。
+MainContainerの持つKeyDelegatorインスタンスに対し、bindKeyDelegation()でスクリーンとキーアクションを紐付けます。この際、対応するスクリーンの識別子、作成したキーアクションのインスタンス、それに対応するスクリーンの実体を渡します。screenRegister()の最後に、swapChain()で最初に用いるスクリーンにスワップしたあと、linkKeyDeielgation()で対応するキーアクションクラスの識別子を選択します。これにより指定したキーアクションクラスでキーボードからの入力を受け付けることができます。
 <br>
 この例では、JPanelに対してキーアクションを紐付けし、キーインプットをリッスンしていますが、その他のコンポーネントにキーアクションを紐付けたい場合は、linkKeyDeielgation()の第一引数に指定したいコンポーネントを指定してください。
 
@@ -234,7 +258,7 @@ MainContainerの持つKeyDelegatorインスタンスに対し、bindKeyDelegatio
 
 <br>
 
----説明は委譲です。---
+---説明は以上です。---
 
 License
 ----------
